@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.cb.mapper.AppUserMapper">
+
+    <resultMap id="AppUser" type="com.cb.domain.AppUser">
+
+        <id column="user_id" property="userId"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="phone_number" property="phoneNumber"/>
+        <result column="user_type" property="userType"/>
+        <result column="user_photo" property="userPhoto"/>
+
+    </resultMap>
+
+    <select id="getUserList" resultMap="AppUser">
+
+        select user_id,
+               nick_name,
+               phone_number,
+               '' as password,
+               IFNULL(user_photo, ''),
+               account,
+               user_type,
+               status
+        FROM app_user
+
+    </select>
+
+    <select id="getUserById" parameterType="string" resultMap="AppUser">
+
+        select user_id,
+               nick_name,
+               phone_number,
+               '' as password,
+               IFNULL(user_photo, ''),
+               account,
+               user_type,
+               status
+        FROM app_user
+        WHERE user_id = #{userId}
+
+    </select>
+
+    <select id="getUserByAccount" parameterType="string" resultMap="AppUser">
+
+        select user_id,
+               nick_name,
+               phone_number,
+               password,
+               IFNULL(user_photo, ''),
+               account,
+               user_type,
+               status
+        FROM app_user
+        WHERE account = #{account}
+
+    </select>
+
+    <insert id="insertUser" parameterType="com.cb.domain.AppUser">
+
+        insert into app_user(user_id, nick_name, phone_number, password, user_photo, account, user_type, status)
+        values(#{userId}, #{nickName}, #{phoneNumber}, #{password}, #{userPhoto}, #{account}, #{userType}, #{status})
+    </insert>
+
+</mapper>
